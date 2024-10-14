@@ -1,0 +1,99 @@
+// Name: <Olajuwon Atunnise>
+// Class: CS 3305/Section # CS 3305/W02
+// Term: Summer 2024
+// Instructor: Dr. Bobbie
+// Assignment: Part 1
+
+import java.util.Random;
+
+public class Main {
+    public static long startTime = 0;
+    public static long EndTime = 0;
+    public static long averW =0;
+    public static double avrgS =0;
+    public static long avrgTISM =0;
+
+        public static void main(String args[])
+        {
+            System.out.println(EndTime-startTime);
+            Random rand = new Random();
+            PQueue processQueue = new PQueue();
+
+            startTime = System.currentTimeMillis();
+
+            for (int i = 1; i < 51; i++){
+                int randPN = rand.nextInt(1,99);
+                ProcessManager process = new ProcessManager(i, randPN, 10, i, 0,0,2.0);
+                process.setProcessATime((double)System.currentTimeMillis());
+                processQueue.enqueue(process);
+            }
+            while (!processQueue.isEmpty) {
+                NodeImple temp = processQueue.Dequeue();
+                if (temp != null) {
+                    System.out.println("Process that was just serviced:");
+                    displayoneN(temp);
+                    EndTime = System.currentTimeMillis();
+                }
+            }
+            System.out.println("average W: " + averW + " average S: " + args);
+        }
+
+    public static void displayQueue(PQueue queue) {
+            int compOrder =1;
+        NodeImple current = queue.head;
+        while (current != null) {
+            ProcessManager process = (ProcessManager) current.data;
+            System.out.println("Process ID: " + process.ProcessID + ", Priority: " + process.PriorityNumber + ", Arrival Time: " + (long)process.getProcessATime()+ ", Waiting Time: " + ", Service Time: " + (long)process.getProcessSTime() + ", Time in System: " + ", Completion Order: " + compOrder);
+            current = current.next;
+            compOrder++;
+        }
+    }
+    public static void displayoneN(NodeImple process){
+        if(process == null){
+            return;
+        }
+        ProcessManager current = (ProcessManager) process.data;
+        long idk = Time_in_System(process);
+        long idk2 = Waiting_time(process);
+        System.out.println("Process ID: " + current.ProcessID + ", Priority: " + current.PriorityNumber + ", Arrival Time: " + (long)current.getProcessATime() + ", Waiting Time: " +idk2+ ", Service Time: " + (long)current.getProcessSTime() + ", Time in System: " +idk+ ", Completion Order: " + current.getProcessCompletionP());
+        averW =+ idk2;
+        avrgS =+idk;
+    }
+    public static void dis(PQueue queue){
+        NodeImple current = queue.head;
+            while(current != null){
+                ProcessManager process = (ProcessManager) current.data;
+                System.out.println(process.getProcessWTime());
+                current = current.next;
+            }
+    }
+    public static long Waiting_time(NodeImple process) {
+        ProcessManager current = (ProcessManager) process.data;
+        long idk = System.currentTimeMillis() - (long) current.getProcessATime();
+        return idk;
+    }
+
+    public static long Time_in_System(NodeImple process) {
+        ProcessManager current = (ProcessManager) process.data;
+        long idk = (long) current.getProcessSTime() - (long) current.getProcessATime();
+        return idk;
+    }
+    public void Statistician (PQueue queue){
+        NodeImple current = queue.head;
+        int averW =0;
+        double avrgS =0;
+        long avrgTISM =0;
+        while (current != null){
+            ProcessManager process = (ProcessManager) current.data;
+            averW =+ process.getProcessWTime();
+            avrgS =+ process.getProcessSTime();
+            avrgTISM =+ (long) process.getProcessSTime() - (long) process.getProcessATime();
+        }
+        int totalW = averW/50;
+        double totalaS = avrgS/50;
+        long totalATS = avrgTISM/50;
+        System.out.println("Average Waiting Time: " + totalW);
+        System.out.println("Average Service Time: " + totalaS);
+        System.out.println("Average Time in System: " + totalATS);
+    }
+}
